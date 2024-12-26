@@ -8,7 +8,7 @@ import { Globe, MapPin, X } from "lucide-react";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { AspectRatio } from "./ui/aspect-ratio";
 import { Skeleton } from "./ui/skeleton";
-// import { useRestaurantStore } from "@/store/useRestaurantStore";
+import { useRestaurantStore } from "@/store/useRestaurantStore";
 import { Restaurant } from "@/types/restaurantType";
 
 const SearchPage = () => {
