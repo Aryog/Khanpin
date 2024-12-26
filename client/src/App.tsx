@@ -9,6 +9,9 @@ import Signup from './auth/Signup'
 import ResetPassword from './auth/ResetPassword'
 import { Search } from 'lucide-react'
 import RestaurantDetail from './components/RestaurantDetail'
+import Cart from './components/Cart'
+import Restaurant from './admin/Restaurant'
+import Success from './components/Success'
 
 
 const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
@@ -63,7 +66,19 @@ const appRouter = createBrowserRouter([
     path: '/restaurant/:id',
     element: <RestaurantDetail />
   },
+  {
+    path: '/cart',
+    element: <Cart />
+  },
+  {
+    path: '/admin/restaurant',
+    element: <Restaurant />
+  },
 
+  {
+    path: '/order/status',
+    element: <Success />
+  },
 ])
 
 export default function App() {
