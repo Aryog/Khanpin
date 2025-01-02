@@ -12,7 +12,6 @@ import { Button } from "./ui/button";
 import { useUserStore } from "@/store/useUserStore";
 import { CheckoutSessionRequest } from "@/types/orderType";
 import { useCartStore } from "@/store/useCartStore";
-import { useRestaurantStore } from "@/store/useRestaurantStore";
 import { useOrderStore } from "@/store/useOrderStore";
 import { Loader2 } from "lucide-react";
 
@@ -33,7 +32,6 @@ const CheckoutConfirmPage = ({
     country: user?.country || "",
   });
   const { cart } = useCartStore();
-  const { restaurant } = useRestaurantStore();
   const { createCheckoutSession, loading } = useOrderStore();
   const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,6 +41,14 @@ const CheckoutConfirmPage = ({
     e.preventDefault();
     // api implementation start from here
     try {
+      console.log(cart)
+      const uniqueRestaurantIds = new Set(cart.map((cartItem) => cartItem.restaurantId));
+      console.log(uniqueRestaurantIds, 'unique ids')
+      if (uniqueRestaurantIds.size > 1) {
+        // If there are multiple restaurant IDs, show an error and stop the process
+        alert("All items in the cart must be from the same restaurant. Please adjust your cart.");
+        return;
+      }
       const checkoutData: CheckoutSessionRequest = {
         cartItems: cart.map((cartItem) => ({
           menuId: cartItem._id,
@@ -52,7 +58,7 @@ const CheckoutConfirmPage = ({
           quantity: cartItem.quantity.toString(),
         })),
         deliveryDetails: input,
-        restaurantId: restaurant?._id as string,
+        restaurantId: Array.from(uniqueRestaurantIds)[0],
       };
       await createCheckoutSession(checkoutData);
     } catch (error) {

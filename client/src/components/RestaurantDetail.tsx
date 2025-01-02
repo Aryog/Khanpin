@@ -42,7 +42,7 @@ const RestaurantDetail = () => {
             </div>
           </div>
         </div>
-        {singleRestaurant?.menus && <AvailableMenu menus={singleRestaurant?.menus!} />}
+        {singleRestaurant?.menus && <AvailableMenu menus={singleRestaurant?.menus!} restaurantId={params?.id!} />}
       </div>
     </div>
   );

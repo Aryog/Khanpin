@@ -5,7 +5,7 @@ export interface CartItem extends MenuItem {
 }
 export type CartState = {
 	cart: CartItem[];
-	addToCart: (item: MenuItem) => void;
+	addToCart: (item: MenuItem, restaurantId: string) => void;
 	clearCart: () => void;
 	removeFromTheCart: (id: string) => void;
 	incrementQuantity: (id: string) => void;

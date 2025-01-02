@@ -38,11 +38,12 @@ import {
 } from "./ui/sheet";
 import { Separator } from "./ui/separator";
 import { useUserStore } from "@/store/useUserStore";
+import { useCartStore } from "@/store/useCartStore";
 import { useThemeStore } from "@/store/useThemeStore";
 
 const Navbar = () => {
   const { user, loading, logout } = useUserStore();
-  const cart = [{ id: 1 }, { id: 2 }]
+  const { cart } = useCartStore();
   const { setTheme } = useThemeStore();
 
   return (

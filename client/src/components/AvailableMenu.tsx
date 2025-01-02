@@ -4,9 +4,10 @@ import { Card, CardContent, CardFooter } from "./ui/card";
 import { useCartStore } from "@/store/useCartStore";
 import { useNavigate } from "react-router-dom";
 
-const AvailableMenu = ({ menus }: { menus: MenuItem[] }) => {
+const AvailableMenu = ({ menus, restaurantId }: { menus: MenuItem[], restaurantId: string }) => {
   const { addToCart } = useCartStore();
   const navigate = useNavigate();
+
   return (
     <div className="md:p-4">
       <h1 className="text-xl md:text-2xl font-extrabold mb-6">
@@ -28,7 +29,7 @@ const AvailableMenu = ({ menus }: { menus: MenuItem[] }) => {
             <CardFooter className="p-4">
               <Button
                 onClick={() => {
-                  addToCart(menu);
+                  addToCart(menu, restaurantId);
                   navigate("/cart");
                 }}
                 className="w-full bg-orange hover:bg-hoverOrange"
