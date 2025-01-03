@@ -37,7 +37,7 @@ const Orders = () => {
                 <div className="font-medium text-lg dark:text-white">{order.deliveryDetails.name}</div>
                 <div className="mt-2 space-y-2">
                   {order.cartItems.map((item, index) => (
-                    <div key={item._id} className="flex items-center gap-4">
+                    <div key={index} className="flex items-center gap-4">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -76,7 +76,7 @@ const Orders = () => {
                         "pending",
                         "confirmed",
                         "preparing",
-                        "outForDelivery",
+                        "outfordelivery",
                         "delivered",
                       ].map((status: string, index: number) => (
                         <SelectItem key={index} value={status}>

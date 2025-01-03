@@ -1,18 +1,20 @@
-
 import { IndianRupee } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useOrderStore } from "@/store/useOrderStore";
 import { useEffect } from "react";
-import { CartItem } from "@/types/cartType";
+import { CartItem } from "@/types/cartTypes";
 
 const Success = () => {
   const { orders, getOrderDetails } = useOrderStore();
-
   useEffect(() => {
     getOrderDetails();
   }, []);
+
+  const calculateTotal = (cartItems: CartItem[]) => {
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
 
   if (orders.length === 0)
     return (
@@ -27,41 +29,61 @@ const Success = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 px-4">
       <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 max-w-lg w-full">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-            Order Status:{" "}
-            <span className="text-[#FF5A5A]">{"confirm".toUpperCase()}</span>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 text-[#FF5A5A] uppercase">
+            Order Summary
           </h1>
         </div>
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
-            Order Summary
-          </h2>
-          {/* Your Ordered Item Display here  */}
+          <Separator className="my-4" />
           {orders.map((order: any, index: number) => (
             <div key={index}>
-              {order.cartItems.map((item: CartItem) => (
-                <div className="mb-4">
+              <div className="mb-4">
+                <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                  Order Status: <span className="text-[#FF5A5A] uppercase">{order.status}</span>
+                </h2>
+              </div>
+              {order.cartItems.map((item: CartItem, itemIndex: number) => (
+                <div key={itemIndex} className="mb-4">
                   <div className="flex justify-between items-center">
-                    <div className="flex items-center">
+                    <div className="flex items-center space-x-4">
                       <img
                         src={item.image}
-                        alt=""
+                        alt={item.name}
                         className="w-14 h-14 rounded-md object-cover"
                       />
-                      <h3 className="ml-4 text-gray-800 dark:text-gray-200 font-medium">
-                        {item.name}
-                      </h3>
+                      <div className="space-y-1">
+                        <h3 className="text-gray-800 dark:text-gray-200 font-medium">
+                          {item.name}
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          Quantity: {item.quantity}
+                        </p>
+                      </div>
                     </div>
                     <div className="text-right">
                       <div className="text-gray-800 dark:text-gray-200 flex items-center">
-                        <IndianRupee />
-                        <span className="text-lg font-medium">{item.price}</span>
+                        <IndianRupee size={16} />
+                        <span className="text-lg font-medium">
+                          {item.price * item.quantity}
+                        </span>
                       </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        (₹{item.price} × {item.quantity})
+                      </p>
                     </div>
                   </div>
-                  <Separator className="my-4" />
                 </div>
               ))}
+              <div className="mt-4 mb-6">
+                <div className="flex justify-between items-center text-lg font-semibold text-gray-800 dark:text-gray-200">
+                  <span>Total Amount</span>
+                  <div className="flex items-center">
+                    <IndianRupee size={18} />
+                    <span>{calculateTotal(order.cartItems)}</span>
+                  </div>
+                </div>
+              </div>
+              <Separator className="my-4" />
             </div>
           ))}
         </div>
